@@ -11,15 +11,15 @@ import java.util.Date;
  */
 @Data
 @Entity
-@Table(name = "T_CONVERSATION_HISTORY")
-public class ConversionHistory {
+@Table(name = "T_EXCHANGE_HISTORY")
+public class ExchangeHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String transactionId;
     private String sourceCurrency;
     private String targetCurrency;
-    private String exchangeRate;
-    private String amount;
+    private Double exchangeRate;
+    private Double amount;
     private Date requestDate;
 }

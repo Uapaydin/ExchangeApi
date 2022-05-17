@@ -6,13 +6,14 @@ spring:
     name: converter
   datasource:
     url: jdbc:h2:mem:convertion
-    username: sa
-    password: password
+    username: root
+    password: root
     driverClassName: org.h2.Driver
   sql:
     init:
       mode: always
   jpa:
+    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
     generate-ddl: true
@@ -25,4 +26,4 @@ spring:
 apilayer:
   symbols-url: https://api.apilayer.com/fixer/symbols
   latest-url: https://api.apilayer.com/fixer/latest?symbols=%s&base=%s
-  key: DWeCfNIH6SOsKDy5H99VzW8YHz2RBbJl
+  key: XBk6JJRGnHHTiDueTI4DTc0yGqo32ncU

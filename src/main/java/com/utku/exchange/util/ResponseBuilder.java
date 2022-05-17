@@ -1,12 +1,13 @@
 package com.utku.exchange.util;
 
+import com.utku.exchange.exception.DtoMappingForPaginationException;
 import com.utku.exchange.util.enumaration.ResponseDataKey;
 import com.utku.exchange.util.enumaration.ReturnType;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ResponseBuilder {
     private final HttpStatus resultStatus;
@@ -43,14 +44,23 @@ public class ResponseBuilder {
         result.put(ResponseDataKey.MESSAGE.getKey(),o);
         return this;
     }
-
-    public ResponseBuilder withPaginatedData(final Object datalist) {
+    public <T> ResponseBuilder withPaginatedData(Page<?> pageData, Class<T> targetDto) throws Exception {
         result.put("isPaginated", true);
-        return withData(datalist);
+        result.put("currentPage",pageData.getNumber());
+        result.put("totalItems",pageData.getTotalElements());
+        result.put("totalPages",pageData.getTotalPages());
+        List<T> mappedResult = new ArrayList<>();
+        for (Object item : pageData.getContent()) {
+            try {
+                mappedResult.add(targetDto.getConstructor(item.getClass()).newInstance(item));
+            } catch (DtoMappingForPaginationException e) {
+                throw e;
+            }
+        }
+        return withData(mappedResult);
     }
 
     public ResponseEntity<Map<String, Object>> build(){
         return new ResponseEntity<>(result,resultStatus);
     }
-
 }

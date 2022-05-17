@@ -1,16 +1,20 @@
 package com.utku.exchange.service.impl;
 
 import com.utku.exchange.data.dto.integration.CurrencyRateDtoBase;
-import com.utku.exchange.data.dto.request.ConversionHistoryRequestDto;
+import com.utku.exchange.data.dto.request.ExchangeHistoryRequestDto;
 import com.utku.exchange.data.dto.request.ExchangeRequestDto;
-import com.utku.exchange.data.dto.response.ConversionHistoryDto;
+import com.utku.exchange.data.dto.response.ExchangeResultDto;
+import com.utku.exchange.data.entity.ExchangeHistory;
+import com.utku.exchange.data.repo.ExchangeHistoryRepository;
 import com.utku.exchange.exception.CurrencyNotFoundException;
 import com.utku.exchange.service.ApiLayerIntegration;
 import com.utku.exchange.service.ExchangeService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author APAYDIN
@@ -19,10 +23,12 @@ import java.util.Map;
 @Service
 public class ExchangeServiceImpl  implements ExchangeService {
 
+    private final ExchangeHistoryRepository exchangeHistoryRepository;
     private final ApiLayerIntegration apiLayerIntegration;
 
-    public ExchangeServiceImpl(ApiLayerIntegrationImpl apiLayerIntegration) {
+    public ExchangeServiceImpl(ApiLayerIntegrationImpl apiLayerIntegration, ExchangeHistoryRepository exchangeHistoryRepository) {
         this.apiLayerIntegration = apiLayerIntegration;
+        this.exchangeHistoryRepository = exchangeHistoryRepository;
     }
 
     @Override
@@ -40,9 +46,18 @@ public class ExchangeServiceImpl  implements ExchangeService {
     }
 
     @Override
-    public Double exchange(ExchangeRequestDto exchangeRateRequestDto) {
+    public ExchangeResultDto exchange(ExchangeRequestDto exchangeRateRequestDto) {
         Double exchangeRate = getExchangeRate(exchangeRateRequestDto.getSourceCurrencyCode(),exchangeRateRequestDto.getTargetCurrencyCode());
-        return exchangeRate * exchangeRateRequestDto.getAmount();
+        Double calculatedAmount =  exchangeRate * exchangeRateRequestDto.getAmount();
+        ExchangeHistory exchangeHistory= new ExchangeHistory();
+        exchangeHistory.setExchangeRate(exchangeRate);
+        exchangeHistory.setAmount(exchangeRateRequestDto.getAmount());
+        exchangeHistory.setSourceCurrency(exchangeRateRequestDto.getSourceCurrencyCode());
+        exchangeHistory.setTargetCurrency(exchangeRateRequestDto.getTargetCurrencyCode());
+        exchangeHistory.setTransactionId(UUID.randomUUID().toString());
+        exchangeHistory.setRequestDate(Calendar.getInstance().getTime());
+        exchangeHistoryRepository.save(exchangeHistory);
+        return new ExchangeResultDto(calculatedAmount,exchangeHistory.getTransactionId());
     }
 
     @Override
@@ -50,9 +65,19 @@ public class ExchangeServiceImpl  implements ExchangeService {
         return apiLayerIntegration.getAvailableSymbols();
     }
 
-
     @Override
-    public List<ConversionHistoryDto> getConversationHistory(ConversionHistoryRequestDto conversionHistoryRequestDto) {
-        return null;
+    public Page<ExchangeHistory> getExchangeHistory(ExchangeHistoryRequestDto exchangeHistoryRequestDto, int page, int size) {
+        Pageable paging = PageRequest.of(page,size);
+        Page<ExchangeHistory> foundPage = null;
+        if(exchangeHistoryRequestDto.getTransactionDate() != null){
+            foundPage = exchangeHistoryRepository.findByRequestDateAfter(exchangeHistoryRequestDto.getTransactionDate(),paging);
+        }else if(exchangeHistoryRequestDto.getTransactionId()!=null && !exchangeHistoryRequestDto.getTransactionId().isEmpty()){
+            foundPage = exchangeHistoryRepository.findByTransactionId(exchangeHistoryRequestDto.getTransactionId(),paging);
+        }else{
+            foundPage = exchangeHistoryRepository.findAll(paging);
+        }
+        return foundPage;
     }
+
+
 }

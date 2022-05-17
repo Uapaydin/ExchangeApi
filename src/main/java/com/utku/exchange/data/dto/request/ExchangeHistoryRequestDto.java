@@ -9,8 +9,7 @@ import java.util.Date;
  * @created 17/05/2022 - 11:17
  */
 @Data
-public class ConversionHistoryRequestDto {
-
+public class ExchangeHistoryRequestDto {
     private String transactionId;
     private Date transactionDate;
 }

@@ -1,10 +1,11 @@
 package com.utku.exchange.service;
 
 import com.utku.exchange.data.dto.request.ExchangeRequestDto;
-import com.utku.exchange.data.dto.response.ConversionHistoryDto;
-import com.utku.exchange.data.dto.request.ConversionHistoryRequestDto;
+import com.utku.exchange.data.dto.request.ExchangeHistoryRequestDto;
+import com.utku.exchange.data.dto.response.ExchangeResultDto;
+import com.utku.exchange.data.entity.ExchangeHistory;
+import org.springframework.data.domain.Page;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -13,7 +14,8 @@ import java.util.Map;
  */
 public interface ExchangeService {
     Double getExchangeRate(String sourceCurrencyCode,String targetCurrencyCode );
-    Double exchange(ExchangeRequestDto exchangeRateRequestDto);
+    ExchangeResultDto exchange(ExchangeRequestDto exchangeRateRequestDto);
     Map<String,String> getAvailableSymbols();
-    List<ConversionHistoryDto> getConversationHistory(ConversionHistoryRequestDto conversionHistoryRequestDto);
+
+    Page<ExchangeHistory> getExchangeHistory(ExchangeHistoryRequestDto exchangeHistoryRequestDto, int page, int size);
 }
