@@ -1,0 +1,28 @@
+
+server:
+  port: 8080
+spring:
+  application:
+    name: converter
+  datasource:
+    url: jdbc:h2:mem:convertion
+    username: sa
+    password: password
+    driverClassName: org.h2.Driver
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    generate-ddl: true
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+    console.path: /h2-console
+    console.settings.trace: false
+apilayer:
+  symbols-url: https://api.apilayer.com/fixer/symbols
+  latest-url: https://api.apilayer.com/fixer/latest?symbols=%s&base=%s
+  key: DWeCfNIH6SOsKDy5H99VzW8YHz2RBbJl
