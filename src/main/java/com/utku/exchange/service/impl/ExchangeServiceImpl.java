@@ -1,6 +1,6 @@
 package com.utku.exchange.service.impl;
 
-import com.utku.exchange.data.dto.Integration.CurrencyRateDtoBase;
+import com.utku.exchange.data.dto.integration.CurrencyRateDtoBase;
 import com.utku.exchange.data.dto.request.ConversionHistoryRequestDto;
 import com.utku.exchange.data.dto.request.ExchangeRequestDto;
 import com.utku.exchange.data.dto.response.ConversionHistoryDto;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 13:09
  */
 @Service

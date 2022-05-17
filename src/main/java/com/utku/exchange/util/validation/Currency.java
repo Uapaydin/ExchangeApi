@@ -7,7 +7,7 @@ import java.lang.annotation.*;
 import static java.lang.annotation.ElementType.*;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 15:33
  */
 @Constraint(validatedBy = CurrencyValidator.class)

@@ -1,13 +1,12 @@
 package com.utku.exchange.service;
 
-import com.utku.exchange.data.dto.Integration.CurrencyRateDtoBase;
+import com.utku.exchange.data.dto.integration.CurrencyRateDtoBase;
 import org.springframework.beans.factory.InitializingBean;
 
-import java.util.List;
 import java.util.Map;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 13:21
  */
 public interface ApiLayerIntegration extends InitializingBean {

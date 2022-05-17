@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 11:17
  */
 @Data

@@ -1,7 +1,7 @@
 package com.utku.exchange.service.impl;
 
-import com.utku.exchange.data.dto.Integration.CurrencyRateDtoBase;
-import com.utku.exchange.data.dto.Integration.SymbolsBase;
+import com.utku.exchange.data.dto.integration.CurrencyRateDtoBase;
+import com.utku.exchange.data.dto.integration.SymbolsBase;
 import com.utku.exchange.properties.ApilayerParameters;
 import com.utku.exchange.service.ApiLayerIntegration;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 13:27
  */
 

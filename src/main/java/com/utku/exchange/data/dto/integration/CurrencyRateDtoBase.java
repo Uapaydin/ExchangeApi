@@ -1,4 +1,4 @@
-package com.utku.exchange.data.dto.Integration;
+package com.utku.exchange.data.dto.integration;
 
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.Map;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 13:24
  */
 @Data

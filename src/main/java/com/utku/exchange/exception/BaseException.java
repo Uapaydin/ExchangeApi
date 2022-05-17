@@ -3,7 +3,7 @@ package com.utku.exchange.exception;
 import org.springframework.http.HttpStatus;
 
 /**
- * @author tcuapaydin
+ * @author APAYDIN
  * @created 17/05/2022 - 14:50
  */
 public class BaseException extends RuntimeException {
