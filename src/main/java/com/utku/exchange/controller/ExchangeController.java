@@ -47,7 +47,7 @@ public class ExchangeController {
     }
 
     @GetMapping("api/exchange/history")
-    public ResponseEntity<Map<String,Object>> getExchangeHistory2(
+    public ResponseEntity<Map<String,Object>> getExchangeHistory(
             @RequestBody ExchangeHistoryRequestDto exchangeHistoryRequestDto,
             @RequestParam(value = "page",defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) throws Exception {

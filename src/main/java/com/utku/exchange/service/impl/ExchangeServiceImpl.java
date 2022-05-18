@@ -47,17 +47,22 @@ public class ExchangeServiceImpl  implements ExchangeService {
 
     @Override
     public ExchangeResultDto exchange(ExchangeRequestDto exchangeRateRequestDto) {
+        String transactionId = UUID.randomUUID().toString();
         Double exchangeRate = getExchangeRate(exchangeRateRequestDto.getSourceCurrencyCode(),exchangeRateRequestDto.getTargetCurrencyCode());
         Double calculatedAmount =  exchangeRate * exchangeRateRequestDto.getAmount();
+        saveExchangeTransaction(exchangeRateRequestDto, transactionId, exchangeRate);
+        return new ExchangeResultDto(calculatedAmount,transactionId);
+    }
+
+    private void saveExchangeTransaction(ExchangeRequestDto exchangeRateRequestDto, String transactionId, Double exchangeRate) {
         ExchangeHistory exchangeHistory= new ExchangeHistory();
         exchangeHistory.setExchangeRate(exchangeRate);
         exchangeHistory.setAmount(exchangeRateRequestDto.getAmount());
         exchangeHistory.setSourceCurrency(exchangeRateRequestDto.getSourceCurrencyCode());
         exchangeHistory.setTargetCurrency(exchangeRateRequestDto.getTargetCurrencyCode());
-        exchangeHistory.setTransactionId(UUID.randomUUID().toString());
+        exchangeHistory.setTransactionId(transactionId);
         exchangeHistory.setRequestDate(Calendar.getInstance().getTime());
         exchangeHistoryRepository.save(exchangeHistory);
-        return new ExchangeResultDto(calculatedAmount,exchangeHistory.getTransactionId());
     }
 
     @Override

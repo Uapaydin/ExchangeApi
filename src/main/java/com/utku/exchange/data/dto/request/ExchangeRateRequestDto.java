@@ -4,6 +4,7 @@ import com.utku.exchange.util.validation.Currency;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
 
@@ -13,6 +14,7 @@ import javax.validation.constraints.NotBlank;
  */
 @Data
 @AllArgsConstructor
+@SuperBuilder
 @NoArgsConstructor
 public class ExchangeRateRequestDto {
     @NotBlank

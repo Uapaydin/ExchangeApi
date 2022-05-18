@@ -46,17 +46,20 @@ public class ResponseBuilder {
     }
     public <T> ResponseBuilder withPaginatedData(Page<?> pageData, Class<T> targetDto) throws Exception {
         result.put("isPaginated", true);
-        result.put("currentPage",pageData.getNumber());
-        result.put("totalItems",pageData.getTotalElements());
-        result.put("totalPages",pageData.getTotalPages());
+        result.put("currentPage",pageData == null? 0 : pageData.getNumber());
+        result.put("totalItems",pageData == null? 0 : pageData.getTotalElements());
+        result.put("totalPages",pageData == null? 0 : pageData.getTotalPages());
         List<T> mappedResult = new ArrayList<>();
-        for (Object item : pageData.getContent()) {
-            try {
-                mappedResult.add(targetDto.getConstructor(item.getClass()).newInstance(item));
-            } catch (DtoMappingForPaginationException e) {
-                throw e;
+        if(pageData != null) {
+            for (Object item : pageData.getContent()) {
+                try {
+                    mappedResult.add(targetDto.getConstructor(item.getClass()).newInstance(item));
+                } catch (DtoMappingForPaginationException e) {
+                    throw e;
+                }
             }
         }
+
         return withData(mappedResult);
     }
 
