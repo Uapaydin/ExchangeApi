@@ -8,6 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
+/**
+ * @author Utku APAYDIN
+ * @created 18/05/2022 - 19:02
+ */
 
 public class BaseHandler {
     protected  static final Logger LOGGER = LoggerFactory.getLogger(BaseHandler.class);

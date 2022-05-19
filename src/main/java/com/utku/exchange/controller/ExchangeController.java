@@ -4,6 +4,7 @@ import com.utku.exchange.data.dto.request.ExchangeHistoryRequestDto;
 import com.utku.exchange.data.dto.request.ExchangeRateRequestDto;
 import com.utku.exchange.data.dto.request.ExchangeRequestDto;
 import com.utku.exchange.data.dto.response.ExchangeHistoryDto;
+import com.utku.exchange.exception.QueryExchangeHistoryException;
 import com.utku.exchange.service.ExchangeService;
 import com.utku.exchange.util.ResponseBuilder;
 import com.utku.exchange.util.enumaration.ReturnType;
@@ -15,7 +16,7 @@ import javax.validation.Valid;
 import java.util.Map;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 12:02
  */
 @RestController
@@ -48,9 +49,12 @@ public class ExchangeController {
 
     @GetMapping("api/exchange/history")
     public ResponseEntity<Map<String,Object>> getExchangeHistory(
-            @RequestBody ExchangeHistoryRequestDto exchangeHistoryRequestDto,
+            @Valid @RequestBody ExchangeHistoryRequestDto exchangeHistoryRequestDto,
             @RequestParam(value = "page",defaultValue = "0") int page,
             @RequestParam(value = "size", defaultValue = "10") int size) throws Exception {
+        if(exchangeHistoryRequestDto.getTransactionId() != null && exchangeHistoryRequestDto.getTransactionDate() != null){
+            throw new QueryExchangeHistoryException();
+        }
         responseBuilder = new ResponseBuilder(HttpStatus.OK, ReturnType.SUCCESS);
         return responseBuilder.withPaginatedData(exchangeService.getExchangeHistory(exchangeHistoryRequestDto,page,size), ExchangeHistoryDto.class).build();
     }

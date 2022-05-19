@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 11:45
  */
 @Data

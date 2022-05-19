@@ -4,7 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 20:50
  */
 @Data

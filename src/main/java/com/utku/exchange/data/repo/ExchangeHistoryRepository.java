@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Date;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 11:57
  */
 public interface ExchangeHistoryRepository extends JpaRepository<ExchangeHistory, String> {

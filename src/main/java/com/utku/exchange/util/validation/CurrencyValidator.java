@@ -8,7 +8,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 15:12
  */
 @Component

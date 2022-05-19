@@ -8,7 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.*;
-
+/**
+ * @author Utku APAYDIN
+ * @created 17/05/2022 - 17:30
+ */
 public class ResponseBuilder {
     private final HttpStatus resultStatus;
     private final Map<String, Object> result = new HashMap<>();

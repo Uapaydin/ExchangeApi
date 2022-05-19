@@ -4,22 +4,32 @@ import com.utku.exchange.data.entity.ExchangeHistory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+/**
+ * @author Utku APAYDIN
+ * @created 18/05/2022 - 19:08
+ */
 
 public class MockTestData {
 
     public static final SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
+    public static Map<Date,Integer> getExchangeHistoryDateCountMap() throws ParseException {
+        Map<Date,Integer> data = new HashMap<>();
+        data.put(formatter.parse("2022-01-10"),4);
+        data.put(formatter.parse("2022-02-15"),3);
+        data.put(formatter.parse("2022-03-20"),2);
+        data.put(formatter.parse("2022-04-10"),1);
+        data.put(formatter.parse("2022-05-11"),0);
+        return data;
+    }
     public static List<ExchangeHistory> getExchangeHistoryData() throws ParseException {
         List<ExchangeHistory> data = new ArrayList<>();
         data.add(new ExchangeHistory("1","transaction-1","JEP","AMD", 1.5,100.1, formatter.parse("2022-01-10")));
-        data.add(new ExchangeHistory("2","transaction-2","BRL","BDT",100.2,2.5,  formatter.parse("2022-01-15")));
-        data.add(new ExchangeHistory("3","transaction-3","GTQ","BMD",100.3,1.1,  formatter.parse("2022-01-20")));
-        data.add(new ExchangeHistory("4","transaction-4","GTQ","CVE",100.4,5.0,  formatter.parse("2022-02-10")));
-        data.add(new ExchangeHistory("5","transaction-5","JEP","BMD",100.5,1.2,  formatter.parse("2022-02-11")));
+        data.add(new ExchangeHistory("2","transaction-2","BRL","BDT",100.2,2.5,  formatter.parse("2022-02-15")));
+        data.add(new ExchangeHistory("3","transaction-3","GTQ","BMD",100.3,1.1,  formatter.parse("2022-03-20")));
+        data.add(new ExchangeHistory("4","transaction-4","GTQ","CVE",100.4,5.0,  formatter.parse("2022-04-10")));
+        data.add(new ExchangeHistory("5","transaction-5","JEP","BMD",100.5,1.2,  formatter.parse("2022-05-11")));
         return data;
     }
 

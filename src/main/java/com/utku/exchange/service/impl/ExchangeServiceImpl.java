@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.*;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 13:09
  */
 @Service

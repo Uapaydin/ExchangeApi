@@ -2,7 +2,7 @@ package com.utku.exchange.exception;
 
 import org.springframework.http.HttpStatus;
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 19:32
  */
 public class DtoMappingForPaginationException extends BaseException {

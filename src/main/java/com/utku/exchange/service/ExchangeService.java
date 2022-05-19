@@ -9,7 +9,7 @@ import org.springframework.data.domain.Page;
 import java.util.Map;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 11:13
  */
 public interface ExchangeService {

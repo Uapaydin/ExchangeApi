@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.NotBlank;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 11:16
  */
 @Data

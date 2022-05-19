@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import javax.validation.constraints.NotNull;
 
 /**
- * @author APAYDIN
+ * @author Utku APAYDIN
  * @created 17/05/2022 - 15:22
  */
 @EqualsAndHashCode(callSuper = true)

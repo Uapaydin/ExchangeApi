@@ -20,8 +20,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import javax.validation.constraints.Null;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
@@ -31,6 +31,10 @@ import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+/**
+ * @author Utku APAYDIN
+ * @created 18/05/2022 - 19:15
+ */
 
 @WebMvcTest(ExchangeController.class)
 class ExchangeControllerTest {
@@ -205,6 +209,38 @@ class ExchangeControllerTest {
                 .andExpect(jsonPath("$.totalItems", is(0)))
                 .andExpect(jsonPath("$", notNullValue()))
                 .andExpect(jsonPath("$.content", notNullValue()));
+    }
+
+    @Test
+    void testGetExchangeHistoryWithTransactionDate() throws Exception{
+        Date randomDateForExchangeHistory = (Date) MockTestData.getExchangeHistoryDateCountMap().keySet().toArray()[rnd.nextInt(MockTestData.getExchangeHistoryData().size())];
+        int resultSize = MockTestData.getExchangeHistoryDateCountMap().get(randomDateForExchangeHistory);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/exchange/history")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.objectMapper.writeValueAsBytes(ExchangeHistoryRequestDto.builder()
+                                .transactionDate(randomDateForExchangeHistory).build())))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.totalItems", is(resultSize)));
+    }
+
+    @Test
+    void testGetExchangeHistoryWithTransactionDateAndTransactionId() throws Exception{
+        String randomTransactionId = MockTestData.getExchangeHistoryData().stream()
+                .map(ExchangeHistory::getTransactionId)
+                .collect(Collectors.toList()).get(rnd.nextInt(MockTestData.getExchangeHistoryData().size()));
+        Date randomDateForExchangeHistory = (Date) MockTestData.getExchangeHistoryDateCountMap().keySet().toArray()[rnd.nextInt(MockTestData.getExchangeHistoryData().size())];
+        int resultSize = MockTestData.getExchangeHistoryDateCountMap().get(randomDateForExchangeHistory);
+        mockMvc.perform(MockMvcRequestBuilders
+                        .get("/api/exchange/history")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.objectMapper.writeValueAsBytes(ExchangeHistoryRequestDto.builder()
+                                .transactionId(randomTransactionId)
+                                .transactionDate(randomDateForExchangeHistory).build())))
+                .andExpect(status().is5xxServerError())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.returnCode", is(-1)));
     }
 
 }
