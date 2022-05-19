@@ -41,6 +41,7 @@ class ExchangeControllerTest {
 
     Random rnd = new Random();
     private final Double EXCHANGE_AMOUNT = 100.0;
+    private final String WRONG_TRANSACTION_ID = "WRONG_TRANSACTION_ID";
     private final int DEFAULT_PAGE = 0;
     private final int DEFAULT_SIZE = 10;
     @Autowired
@@ -204,7 +205,7 @@ class ExchangeControllerTest {
                         .get("/api/exchange/history")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsBytes(ExchangeHistoryRequestDto.builder()
-                                .transactionId("").build())))
+                                .transactionId(WRONG_TRANSACTION_ID).build())))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.totalItems", is(0)))
                 .andExpect(jsonPath("$", notNullValue()))
@@ -231,7 +232,6 @@ class ExchangeControllerTest {
                 .map(ExchangeHistory::getTransactionId)
                 .collect(Collectors.toList()).get(rnd.nextInt(MockTestData.getExchangeHistoryData().size()));
         Date randomDateForExchangeHistory = (Date) MockTestData.getExchangeHistoryDateCountMap().keySet().toArray()[rnd.nextInt(MockTestData.getExchangeHistoryData().size())];
-        int resultSize = MockTestData.getExchangeHistoryDateCountMap().get(randomDateForExchangeHistory);
         mockMvc.perform(MockMvcRequestBuilders
                         .get("/api/exchange/history")
                         .contentType(MediaType.APPLICATION_JSON)

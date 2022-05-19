@@ -7,38 +7,27 @@ import com.utku.exchange.data.dto.request.ExchangeRequestDto;
 import com.utku.exchange.data.dto.response.ExchangeResultDto;
 import com.utku.exchange.data.entity.ExchangeHistory;
 import com.utku.exchange.data.repo.ExchangeHistoryRepository;
-import com.utku.exchange.service.ApiLayerIntegration;
-import com.utku.exchange.service.ExchangeService;
-import org.aspectj.lang.annotation.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import javax.validation.constraints.AssertTrue;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Utku APAYDIN
  * @created 18/05/2022 - 9:04 PM
  */
 class ExchangeServiceImplTest {
-
-//    private final ExchangeHistoryRepository exchangeHistoryRepository;
-//    private final ApiLayerIntegration apiLayerIntegration;
     Random rnd = new Random();
 
     @Mock
@@ -50,12 +39,10 @@ class ExchangeServiceImplTest {
 
     @InjectMocks
     ExchangeServiceImpl exchangeService;
-    private final Double EXCHANGE_AMOUNT = 100.0;
     private final String WRONG_TRANSACTION_ID = "WRONG_TRANSACTION_ID";
     private final int DEFAULT_PAGE = 0;
     private final int DEFAULT_SIZE = 10;
 
-    private HibernateTemplate hibernateTemplateMock;
 
     @BeforeEach
     void init() throws ParseException {
@@ -73,7 +60,6 @@ class ExchangeServiceImplTest {
             });
         });
 
-        Mockito.when(exchangeHistoryRepository.findAll()).thenReturn(MockTestData.getExchangeHistoryData());
         MockTestData.getExchangeHistoryData().forEach(item ->
                 Mockito.when(exchangeHistoryRepository.findByTransactionId(item.getTransactionId(),
                         PageRequest.of(DEFAULT_PAGE,DEFAULT_SIZE))).thenReturn(new PageImpl<>(List.of(item))));
@@ -104,11 +90,11 @@ class ExchangeServiceImplTest {
         String randomSymbol1 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
         String randomSymbol2 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
         Double actualRate = MockTestData.getRateForSymbol(randomSymbol1).get(randomSymbol2);
-        ExchangeRequestDto requestDto = new ExchangeRequestDto();
-        requestDto.setSourceCurrencyCode(randomSymbol1);
-        requestDto.setTargetCurrencyCode(randomSymbol2);
-        requestDto.setAmount(EXCHANGE_AMOUNT);
-        ExchangeResultDto resultDto = exchangeService.exchange(requestDto);
+        Double EXCHANGE_AMOUNT = 100.0;
+        ExchangeResultDto resultDto = exchangeService.exchange(ExchangeRequestDto.builder()
+                .sourceCurrencyCode(randomSymbol1)
+                .targetCurrencyCode(randomSymbol2)
+                .amount(EXCHANGE_AMOUNT).build());
         assertThat(resultDto.getCalculatedAmount()).isEqualTo((actualRate * EXCHANGE_AMOUNT));
     }
 
@@ -127,8 +113,8 @@ class ExchangeServiceImplTest {
     }
 
     @Test
-    void testGetExchangeHistoryWithWrongTransactionId() throws ParseException {
-        Page<ExchangeHistory> result = exchangeService.getExchangeHistory(ExchangeHistoryRequestDto.builder().transactionId("WRONG_TRANSACTION_ID").build(),DEFAULT_PAGE,DEFAULT_SIZE);
+    void testGetExchangeHistoryWithWrongTransactionId() {
+        Page<ExchangeHistory> result = exchangeService.getExchangeHistory(ExchangeHistoryRequestDto.builder().transactionId(WRONG_TRANSACTION_ID).build(),DEFAULT_PAGE,DEFAULT_SIZE);
         assertThat(result.getSize()).isZero();
     }
 

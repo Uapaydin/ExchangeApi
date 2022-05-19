@@ -23,11 +23,6 @@ public class ResponseBuilder {
         result.put("isPaginated", false);
     }
 
-    public ResponseBuilder withError(final Exception e) {
-        result.put(ResponseDataKey.ERROR.getKey(),e);
-        return this;
-    }
-
     public ResponseBuilder withError(final String error) {
         result.put(ResponseDataKey.ERROR.getKey(),error);
         return this;
@@ -43,10 +38,6 @@ public class ResponseBuilder {
         return this;
     }
 
-    public ResponseBuilder withMessage(final Object o) {
-        result.put(ResponseDataKey.MESSAGE.getKey(),o);
-        return this;
-    }
     public <T> ResponseBuilder withPaginatedData(Page<?> pageData, Class<T> targetDto) throws Exception {
         result.put("isPaginated", true);
         result.put("currentPage",pageData == null? 0 : pageData.getNumber());

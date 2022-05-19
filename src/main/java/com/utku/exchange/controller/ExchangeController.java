@@ -8,6 +8,7 @@ import com.utku.exchange.exception.QueryExchangeHistoryException;
 import com.utku.exchange.service.ExchangeService;
 import com.utku.exchange.util.ResponseBuilder;
 import com.utku.exchange.util.enumaration.ReturnType;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,14 +21,11 @@ import java.util.Map;
  * @created 17/05/2022 - 12:02
  */
 @RestController
+@RequiredArgsConstructor
 public class ExchangeController {
 
     private final ExchangeService exchangeService;
     private ResponseBuilder responseBuilder;
-
-    public ExchangeController(ExchangeService exchangeService) {
-        this.exchangeService = exchangeService;
-    }
 
     @GetMapping("api/rate")
     public ResponseEntity<Map<String, Object>> getRate(@Valid @RequestBody ExchangeRateRequestDto  exchangeRateRequestDto) {

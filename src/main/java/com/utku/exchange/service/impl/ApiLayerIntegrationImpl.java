@@ -25,12 +25,11 @@ import java.util.Map;
 public class ApiLayerIntegrationImpl implements ApiLayerIntegration {
 
 
-    final
-    ApilayerParameters apilayerParameters;
-
+    private final ApilayerParameters apilayerParameters;
     private final RestTemplate restTemplate;
-    Map<String,String> cachedAvailableSymbols;
-    ResponseEntity<?> responseEntity;
+
+    private Map<String,String> cachedAvailableSymbols;
+    private ResponseEntity<?> responseEntity;
 
     public ApiLayerIntegrationImpl(ApilayerParameters apilayerParameters){
         restTemplate = new RestTemplate();
@@ -42,8 +41,8 @@ public class ApiLayerIntegrationImpl implements ApiLayerIntegration {
         return cachedAvailableSymbols;
     }
 
-    public CurrencyRateDtoBase getExchangeForCurrencyRates(String currencyCode, String targetCurrencyCode) {
-        responseEntity = restTemplate.exchange(String.format(apilayerParameters.getLatestUrl(),targetCurrencyCode,currencyCode), HttpMethod.GET, createHeader(), CurrencyRateDtoBase.class);
+    public CurrencyRateDtoBase getExchangeForCurrencyRates(String sourceCurrencyCode, String targetCurrencyCode) {
+        responseEntity = restTemplate.exchange(String.format(apilayerParameters.getLatestUrl(),targetCurrencyCode,sourceCurrencyCode), HttpMethod.GET, createHeader(), CurrencyRateDtoBase.class);
         if(responseEntity.getBody() != null){
             return (CurrencyRateDtoBase) responseEntity.getBody();
         }

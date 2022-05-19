@@ -9,6 +9,7 @@ import com.utku.exchange.data.repo.ExchangeHistoryRepository;
 import com.utku.exchange.exception.CurrencyNotFoundException;
 import com.utku.exchange.service.ApiLayerIntegration;
 import com.utku.exchange.service.ExchangeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,16 +21,13 @@ import java.util.*;
  * @author Utku APAYDIN
  * @created 17/05/2022 - 13:09
  */
+@RequiredArgsConstructor
 @Service
 public class ExchangeServiceImpl  implements ExchangeService {
 
     private final ExchangeHistoryRepository exchangeHistoryRepository;
     private final ApiLayerIntegration apiLayerIntegration;
 
-    public ExchangeServiceImpl(ApiLayerIntegrationImpl apiLayerIntegration, ExchangeHistoryRepository exchangeHistoryRepository) {
-        this.apiLayerIntegration = apiLayerIntegration;
-        this.exchangeHistoryRepository = exchangeHistoryRepository;
-    }
 
     @Override
     public Double getExchangeRate(String sourceCurrencyCode,String targetCurrencyCode ) {
