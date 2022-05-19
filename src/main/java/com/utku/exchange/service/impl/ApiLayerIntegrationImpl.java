@@ -14,6 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * @author Utku APAYDIN
@@ -50,12 +51,9 @@ public class ApiLayerIntegrationImpl implements ApiLayerIntegration {
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-
+    public void afterPropertiesSet() {
         responseEntity = restTemplate.exchange(apilayerParameters.getSymbolsUrl(), HttpMethod.GET, createHeader(), SymbolsBase.class);
-        if(responseEntity.getBody() != null){
-            cachedAvailableSymbols = ((SymbolsBase)responseEntity.getBody()).getSymbols();
-        }
+        Optional.ofNullable(responseEntity.getBody()).ifPresent(o -> cachedAvailableSymbols = ((SymbolsBase) o).getSymbols());
     }
 
     private HttpEntity<?> createHeader() {

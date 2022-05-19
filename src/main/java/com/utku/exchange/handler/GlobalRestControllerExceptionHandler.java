@@ -28,13 +28,13 @@ public class GlobalRestControllerExceptionHandler extends BaseHandler {
     @ExceptionHandler(CurrencyNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleBusinessException(CurrencyNotFoundException e, HttpServletRequest request, HttpServletResponse response) {
         log.error("Given currency not found", e);
-        return handleException(e, request, e.getHttpStatus());
+        return handleException(e,  e.getHttpStatus());
     }
     @ExceptionHandler(QueryExchangeHistoryException.class)
     public ResponseEntity<Map<String, Object>> handleBusinessException(QueryExchangeHistoryException e, HttpServletRequest request, HttpServletResponse response) {
-        return handleException(e, request, e.getHttpStatus());
+        return handleException(e,  e.getHttpStatus());
     }
-    private ResponseEntity<Map<String, Object>> handleException(BaseException ex, HttpServletRequest request, HttpStatus status) {
+    private ResponseEntity<Map<String, Object>> handleException(BaseException ex, HttpStatus status) {
         return new ResponseBuilder(status, ReturnType.FAILURE).withError(ex.getMessage()).build();
     }
 }
