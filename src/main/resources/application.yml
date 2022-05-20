@@ -25,4 +25,4 @@ spring:
 apilayer:
   symbols-url: https://api.apilayer.com/fixer/symbols
   latest-url: https://api.apilayer.com/fixer/latest?symbols=%s&base=%s
-  key: O7Ku5oXWRVpyRQivbO33o3z96KCq4Erg
+  key: AO5AGUQkBohqbbYYnFWd9wKdQF1DIRjo

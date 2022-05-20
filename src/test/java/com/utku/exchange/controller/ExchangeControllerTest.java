@@ -16,6 +16,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -63,6 +64,18 @@ class ExchangeControllerTest {
                             DEFAULT_PAGE,
                             DEFAULT_SIZE))
                     .thenReturn(foundPage);
+        });
+
+        MockTestData.getExchangeHistoryData().forEach(item ->{
+            try {
+                List<ExchangeHistory> filteredData = MockTestData.getExchangeHistoryData().stream().filter(record -> record.getRequestDate().after(item.getRequestDate())).collect(Collectors.toList());
+                Mockito.when(exchangeService.getExchangeHistory( ExchangeHistoryRequestDto.builder()
+                                .transactionDate(item.getRequestDate()).build(),
+                        DEFAULT_PAGE,
+                        DEFAULT_SIZE)).thenReturn(new PageImpl<>(filteredData));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         });
         MockTestData.getRates().forEach((sourceSymbol, rates) ->
                 rates.forEach((targetSymbol, targetRate) ->{
