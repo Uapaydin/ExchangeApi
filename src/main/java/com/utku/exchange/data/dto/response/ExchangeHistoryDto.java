@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -18,8 +19,8 @@ import java.util.Date;
 public class ExchangeHistoryDto {
     private String sourceCurrency;
     private String targetCurrency;
-    private String exchangeRate;
-    private String amount;
+    private BigDecimal exchangeRate;
+    private BigDecimal amount;
     private Date requestDate;
 
     public ExchangeHistoryDto(ExchangeHistory source){

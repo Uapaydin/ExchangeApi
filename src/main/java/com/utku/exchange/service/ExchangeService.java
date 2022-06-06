@@ -6,6 +6,7 @@ import com.utku.exchange.data.dto.response.ExchangeResultDto;
 import com.utku.exchange.data.entity.ExchangeHistory;
 import org.springframework.data.domain.Page;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -13,7 +14,7 @@ import java.util.Map;
  * @created 17/05/2022 - 11:13
  */
 public interface ExchangeService {
-    Double getExchangeRate(String sourceCurrencyCode,String targetCurrencyCode );
+    BigDecimal getExchangeRate(String sourceCurrencyCode, String targetCurrencyCode );
     ExchangeResultDto exchange(ExchangeRequestDto exchangeRateRequestDto);
     Map<String,String> getAvailableSymbols();
 

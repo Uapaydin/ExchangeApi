@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -23,7 +24,7 @@ public class ExchangeHistory {
     private String transactionId;
     private String sourceCurrency;
     private String targetCurrency;
-    private Double exchangeRate;
-    private Double amount;
+    private BigDecimal exchangeRate;
+    private BigDecimal amount;
     private Date requestDate;
 }

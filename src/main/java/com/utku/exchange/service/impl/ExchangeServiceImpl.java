@@ -15,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -30,9 +31,9 @@ public class ExchangeServiceImpl  implements ExchangeService {
 
 
     @Override
-    public Double getExchangeRate(String sourceCurrencyCode,String targetCurrencyCode ) {
+    public BigDecimal getExchangeRate(String sourceCurrencyCode, String targetCurrencyCode ) {
         CurrencyRateDtoBase result = apiLayerIntegration.getExchangeForCurrencyRates(sourceCurrencyCode,targetCurrencyCode);
-        if(result.isSuccess()){
+        if(result != null && result.isSuccess()){
             if(result.getRates().size()>0){
                 return result.getRates().get(targetCurrencyCode);
             }else{
@@ -46,13 +47,13 @@ public class ExchangeServiceImpl  implements ExchangeService {
     @Override
     public ExchangeResultDto exchange(ExchangeRequestDto exchangeRateRequestDto) {
         String transactionId = UUID.randomUUID().toString();
-        Double exchangeRate = getExchangeRate(exchangeRateRequestDto.getSourceCurrencyCode(),exchangeRateRequestDto.getTargetCurrencyCode());
-        Double calculatedAmount =  exchangeRate * exchangeRateRequestDto.getAmount();
+        BigDecimal exchangeRate = getExchangeRate(exchangeRateRequestDto.getSourceCurrencyCode(),exchangeRateRequestDto.getTargetCurrencyCode());
+        BigDecimal calculatedAmount =  exchangeRate.multiply(exchangeRateRequestDto.getAmount());
         saveExchangeTransaction(exchangeRateRequestDto, transactionId, exchangeRate);
         return new ExchangeResultDto(calculatedAmount,transactionId);
     }
 
-    private void saveExchangeTransaction(ExchangeRequestDto exchangeRateRequestDto, String transactionId, Double exchangeRate) {
+    private void saveExchangeTransaction(ExchangeRequestDto exchangeRateRequestDto, String transactionId, BigDecimal exchangeRate) {
         ExchangeHistory exchangeHistory= new ExchangeHistory();
         exchangeHistory.setExchangeRate(exchangeRate);
         exchangeHistory.setAmount(exchangeRateRequestDto.getAmount());
@@ -72,12 +73,12 @@ public class ExchangeServiceImpl  implements ExchangeService {
     public Page<ExchangeHistory> getExchangeHistory(ExchangeHistoryRequestDto exchangeHistoryRequestDto, int page, int size) {
         Pageable paging = PageRequest.of(page,size);
         Page<ExchangeHistory> foundPage = null;
-        if(exchangeHistoryRequestDto.getTransactionDate() != null){
-            foundPage = exchangeHistoryRepository.findByRequestDateAfter(exchangeHistoryRequestDto.getTransactionDate(),paging);
-        }else if(exchangeHistoryRequestDto.getTransactionId()!=null && !exchangeHistoryRequestDto.getTransactionId().isEmpty()){
+        if(exchangeHistoryRequestDto.getTransactionDate() != null && exchangeHistoryRequestDto.getTransactionId() != null){
+            foundPage = exchangeHistoryRepository.findByTransactionIdAndRequestDateAfter(exchangeHistoryRequestDto.getTransactionId(),exchangeHistoryRequestDto.getTransactionDate(),paging);
+        }else if(exchangeHistoryRequestDto.getTransactionId() == null){
             foundPage = exchangeHistoryRepository.findByTransactionId(exchangeHistoryRequestDto.getTransactionId(),paging);
-        }else{
-            foundPage = exchangeHistoryRepository.findAll(paging);
+        }else if(exchangeHistoryRequestDto.getTransactionDate() != null){
+            foundPage = exchangeHistoryRepository.findByRequestDateAfter(exchangeHistoryRequestDto.getTransactionDate(),paging);
         }
         return foundPage;
     }

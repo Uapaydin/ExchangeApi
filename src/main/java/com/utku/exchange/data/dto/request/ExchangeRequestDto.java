@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 
 /**
  * @author Utku APAYDIN
@@ -19,5 +20,5 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 public class ExchangeRequestDto extends ExchangeRateRequestDto{
     @NotNull
-    private Double amount;
+    private BigDecimal amount;
 }

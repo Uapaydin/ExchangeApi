@@ -15,4 +15,5 @@ public interface ExchangeHistoryRepository extends JpaRepository<ExchangeHistory
 
     Page<ExchangeHistory> findByTransactionId(String transactionId, Pageable pageable);
     Page<ExchangeHistory> findByRequestDateAfter(Date date, Pageable pageable);
+    Page<ExchangeHistory> findByTransactionIdAndRequestDateAfter(String transactionId, Date date, Pageable pageable);
 }

@@ -17,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -80,8 +81,8 @@ class ExchangeServiceImplTest {
     void testGetExchangeRate() {
         String randomSymbol1 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
         String randomSymbol2 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
-        Double rate = exchangeService.getExchangeRate(randomSymbol1,randomSymbol2);
-        Double actualRate = MockTestData.getRateForSymbol(randomSymbol1).get(randomSymbol2);
+        BigDecimal rate = exchangeService.getExchangeRate(randomSymbol1,randomSymbol2);
+        BigDecimal actualRate = MockTestData.getRateForSymbol(randomSymbol1).get(randomSymbol2);
         assertThat(rate).isEqualTo(actualRate);
     }
 
@@ -89,13 +90,13 @@ class ExchangeServiceImplTest {
     void testExchange() {
         String randomSymbol1 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
         String randomSymbol2 = MockTestData.getSymbolListData().keySet().toArray()[rnd.nextInt(MockTestData.getSymbolListData().size())].toString();
-        Double actualRate = MockTestData.getRateForSymbol(randomSymbol1).get(randomSymbol2);
-        Double EXCHANGE_AMOUNT = 100.0;
+        BigDecimal actualRate = MockTestData.getRateForSymbol(randomSymbol1).get(randomSymbol2);
+        BigDecimal EXCHANGE_AMOUNT = BigDecimal.valueOf(100.0);
         ExchangeResultDto resultDto = exchangeService.exchange(ExchangeRequestDto.builder()
                 .sourceCurrencyCode(randomSymbol1)
                 .targetCurrencyCode(randomSymbol2)
                 .amount(EXCHANGE_AMOUNT).build());
-        assertThat(resultDto.getCalculatedAmount()).isEqualTo((actualRate * EXCHANGE_AMOUNT));
+        assertThat(resultDto.getCalculatedAmount()).isEqualTo(actualRate.multiply(EXCHANGE_AMOUNT));
     }
 
     @Test

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -21,5 +22,5 @@ public class CurrencyRateDtoBase extends ApiLayerResponseDto{
     @JsonAlias("base")
     private String currencyName;
     private Date date;
-    private  Map<String,Double> rates;
+    private  Map<String, BigDecimal> rates;
 }
